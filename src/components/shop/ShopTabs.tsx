@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { clsx } from "@/lib/clsx";
 import { formatUSD } from "@/lib/format";
+import { useImagesLoaded } from "@/lib/useImagesLoaded";
 import type { Product } from "@/data/products";
 import { CommissionsPanel } from "./CommissionsPanel";
 
@@ -46,16 +47,22 @@ export function ShopTabs({ products }: { products: Product[] }) {
       {tab === "commissions" ? (
         <CommissionsPanel />
       ) : (
-        <ProductGrid products={products.filter((p) => p.kind === tab)} />
+        <ProductGrid key={tab} products={products.filter((p) => p.kind === tab)} />
       )}
     </>
   );
 }
 
 function ProductGrid({ products }: { products: Product[] }) {
+  const { revealed, onImageLoad } = useImagesLoaded(products.length);
   return (
     <Container>
-      <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={clsx(
+          "grid grid-cols-1 gap-x-6 gap-y-12 transition-opacity duration-700 sm:grid-cols-2 lg:grid-cols-3",
+          revealed ? "opacity-100" : "opacity-0",
+        )}
+      >
         {products.map((product) => {
           const isPrint = product.kind === "print";
           // Transform scale that makes an object-contain image exactly cover
@@ -76,6 +83,8 @@ function ProductGrid({ products }: { products: Product[] }) {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 quality={90}
+                loading="eager"
+                onLoad={onImageLoad}
                 className={clsx(
                   "object-contain object-center",
                   isPrint

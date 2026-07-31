@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Lightbox, type LightboxItem } from "@/components/Lightbox";
+import { clsx } from "@/lib/clsx";
+import { useImagesLoaded } from "@/lib/useImagesLoaded";
 import type { ArtworkColumns, ArtworkImage } from "@/data/artworkCategories";
 
 /**
@@ -20,10 +22,17 @@ import type { ArtworkColumns, ArtworkImage } from "@/data/artworkCategories";
  */
 export function CategoryGallery({ columns }: { columns: ArtworkColumns }) {
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
+  const imageCount = columns.reduce((sum, column) => sum + column.length, 0);
+  const { revealed, onImageLoad } = useImagesLoaded(imageCount);
 
   return (
     <div className="mx-auto w-full max-w-[1576px] px-6 py-16 sm:px-8 sm:py-24">
-      <div className="grid grid-cols-1 gap-x-[60px] gap-y-[100px] sm:grid-cols-3">
+      <div
+        className={clsx(
+          "grid grid-cols-1 gap-x-[60px] gap-y-[100px] transition-opacity duration-700 sm:grid-cols-3",
+          revealed ? "opacity-100" : "opacity-0",
+        )}
+      >
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className="flex flex-col gap-[100px]">
             {column.map((image) => (
@@ -31,6 +40,7 @@ export function CategoryGallery({ columns }: { columns: ArtworkColumns }) {
                 key={image.src}
                 image={image}
                 onOpen={() => setLightboxItem({ src: image.src, alt: image.alt })}
+                onLoad={onImageLoad}
               />
             ))}
           </div>
@@ -48,9 +58,11 @@ export function CategoryGallery({ columns }: { columns: ArtworkColumns }) {
 function ArtworkCell({
   image,
   onOpen,
+  onLoad,
 }: {
   image: ArtworkImage;
   onOpen: () => void;
+  onLoad: () => void;
 }) {
   return (
     <button
@@ -65,6 +77,8 @@ function ArtworkCell({
         fill
         sizes="(min-width: 640px) 485px, 100vw"
         quality={90}
+        loading="eager"
+        onLoad={onLoad}
         className="object-contain object-top"
       />
     </button>

@@ -11,6 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { clsx } from "@/lib/clsx";
+import { useImagesLoaded } from "@/lib/useImagesLoaded";
 import { GalleryTuningPanel } from "@/components/exhibitions/GalleryTuningPanel";
 import { Lightbox } from "@/components/Lightbox";
 
@@ -146,6 +147,7 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
 
   const reducedMotion = usePrefersReducedMotion();
   const panelVisible = useTuningPanelVisible();
+  const { revealed, onImageLoad } = useImagesLoaded(flat.length);
 
   // Derive each cell's transform purely from hover state + measured centres +
   // live tuning — no effect, so panel tweaks recompute on the next render.
@@ -230,7 +232,13 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
     : `transform ${tuning.durationMs}ms ${tuning.easing}`;
 
   return (
-    <div ref={rootRef} className="mt-[93px] space-y-[119px]">
+    <div
+      ref={rootRef}
+      className={clsx(
+        "mt-[93px] space-y-[119px] transition-opacity duration-700",
+        revealed ? "opacity-100" : "opacity-0",
+      )}
+    >
       {indexedRows.map((row, rowIndex) => (
         <div key={rowIndex} className={row.className}>
           {row.items.map(({ item, index }) => {
@@ -272,6 +280,8 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
                   fill
                   sizes="450px"
                   quality={90}
+                  loading="eager"
+                  onLoad={onImageLoad}
                   className="object-cover"
                 />
               </div>

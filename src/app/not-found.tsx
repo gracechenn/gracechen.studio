@@ -1,25 +1,34 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PageShell } from "@/components/PageShell";
-import { Container } from "@/components/Container";
 
 export default function NotFound() {
   return (
     <PageShell>
-      <Container className="flex flex-col items-center py-32 text-center">
-        <p className="type-h1">
-          Not here
-        </p>
-        <p className="mt-6 max-w-sm type-body-1 text-ink-muted">
+      <div className="flex min-h-[calc(100dvh-169px)] flex-col items-center justify-center gap-[40px] px-6 text-center">
+        <div className="relative aspect-[328/261] w-[328px] max-w-full">
+          <Image
+            src="/assets/not-found/page-not-found.png"
+            alt="Page not found"
+            fill
+            sizes="328px"
+            priority
+            className="object-contain"
+          />
+        </div>
+        <p className="type-body-1 text-ink">
           That page seems to have wandered off. Let&rsquo;s get you back to the
           studio.
         </p>
-        <Link
-          href="/"
-          className="mt-8 type-label text-accent-muted transition-colors hover:text-accent"
-        >
-          Return home →
-        </Link>
-      </Container>
+        <div className="py-[20px]">
+          <Link
+            href="/"
+            className="type-label text-[16px] text-[#0051ff] transition-opacity hover:opacity-70"
+          >
+            RETURN HOME →
+          </Link>
+        </div>
+      </div>
     </PageShell>
   );
 }
