@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — gracechen.studio                                    */
+/* Source: DESIGN_SPEC.md color tokens + fonts.                        */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #ffffff;
+  --ink: #1f1f1f;
+  --ink-strong: #000000;
+  --ink-muted: rgba(31, 31, 31, 0.7);
+  --accent: #3f2dcc;
+  --accent-muted: rgba(63, 45, 204, 0.7);
+  --card: rgba(238, 238, 238, 0.6);
+  --hairline: rgba(31, 31, 31, 0.12);
+
+  --font-script: var(--font-beth-ellen), cursive;
+  --font-sans: var(--font-tex), Arial, sans-serif;
+}
+
+/* Expose tokens to Tailwind's utility engine (v4 @theme). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-ink: var(--ink);
+  --color-ink-strong: var(--ink-strong);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-card: var(--card);
+  --color-hairline: var(--hairline);
+
+  --font-script: var(--font-beth-ellen), cursive;
+  --font-sans: var(--font-tex), Arial, sans-serif;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* ------------------------------------------------------------------ */
+/* Typographic system — semantic roles bound to the design tokens.     */
+/* Only H1, H2, Body 1, Body 2, Label (+ Wordmark) exist by design.    */
+/* Color/hover are applied via Tailwind utilities alongside these.     */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .type-wordmark {
+    font-family: var(--font-script);
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--ink-strong);
+  }
+  .type-h1 {
+    font-family: var(--font-script);
+    font-size: clamp(40px, 4.5vw, 52px);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .type-h2 {
+    font-family: var(--font-script);
+    font-size: 24px;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .type-body-1 {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .type-body-2 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .type-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+}
+
+/* Utility: soft "glow" via blurred duplicate is handled inline where needed. */
+
+/* Hide scrollbars for the horizontal filmstrip while keeping it scrollable. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
