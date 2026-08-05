@@ -30,47 +30,55 @@ export async function generateMetadata({
 
 export default async function ProductPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { slug } = await params;
+  const { from } = await searchParams;
   const product = getProduct(slug);
   if (!product) notFound();
+
+  // Return to the tab the visitor came from; fall back to the product's kind
+  // ("print" → Prints tab, "original" → Originals tab) on a direct landing.
+  const backTab = from === "print" || from === "original" ? from : product.kind;
 
   return (
     <PageShell>
       <Container className="pt-8 pb-8">
         <Link
-          href="/shop"
+          href={`/shop?tab=${backTab}`}
           className="type-label transition-colors hover:text-ink"
         >
           ← Back to shop
         </Link>
       </Container>
       <Container className="grid gap-10 md:grid-cols-2 md:gap-16">
-        <div className="relative aspect-[4/5] w-full overflow-hidden bg-card">
+        <div className="w-full">
           <Image
             src={product.image}
             alt={product.title}
-            fill
+            width={product.width}
+            height={product.height}
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-contain"
+            className="h-auto w-full"
             priority
           />
         </div>
 
         <div className="flex flex-col">
           <p className="type-label">
-            {product.kind === "original" ? "Original work" : "Archival print"}
+            {product.kind === "original" ? "Original work" : "print"}
           </p>
           <h1 className="mt-3 type-h2">
             {product.title}
           </h1>
           {!product.sold && (
-            <p className="mt-5 type-body-1 text-ink">{formatUSD(product.price)}</p>
+            <p className="mt-5 type-body-2 text-ink">{formatUSD(product.price)}</p>
           )}
 
-          <dl className="mt-8 space-y-2 border-t border-hairline pt-6 type-body-2">
+          <dl className="mt-6 space-y-2 type-body-2">
             {product.medium && (
               <div className="flex gap-3">
                 <dt className="w-28 text-ink-muted">Medium</dt>
@@ -87,7 +95,7 @@ export default async function ProductPage({
             </div>
           </dl>
 
-          <p className="mt-6 max-w-prose type-body-1 text-ink-muted">
+          <p className="mt-6 max-w-prose type-body-2 text-ink-muted">
             {product.description}
           </p>
 

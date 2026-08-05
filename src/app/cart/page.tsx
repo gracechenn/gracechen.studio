@@ -41,16 +41,27 @@ export default function CartPage() {
   if (lines.length === 0) {
     return (
       <PageShell>
-        <PageHeader title="Cart" />
-        <Container className="pb-24">
-          <p className="type-body-1 text-ink-muted">Your cart is empty.</p>
-          <Link
-            href="/shop"
-            className="mt-6 inline-block type-label text-accent-muted transition-colors hover:text-accent"
-          >
-            Browse the shop →
-          </Link>
-        </Container>
+        <div className="flex min-h-[calc(100dvh-169px)] flex-col items-center justify-center gap-[40px] px-6 text-center">
+          <div className="relative aspect-[394/266] w-[394px] max-w-full">
+            <Image
+              src="/assets/cart/empty-cart.png"
+              alt="Your cart is empty"
+              fill
+              sizes="394px"
+              priority
+              className="object-contain"
+            />
+          </div>
+          <p className="type-body-1 text-ink">Your cart is empty.</p>
+          <div className="py-[20px]">
+            <Link
+              href="/shop"
+              className="type-label text-[16px] text-[#0051ff] transition-opacity hover:opacity-70"
+            >
+              BROWSE SHOP →
+            </Link>
+          </div>
+        </div>
       </PageShell>
     );
   }

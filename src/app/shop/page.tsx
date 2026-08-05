@@ -8,10 +8,19 @@ export const metadata: Metadata = {
   description: "Original paintings and archival prints by Grace Chen.",
 };
 
-export default function ShopPage() {
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const { tab } = await searchParams;
+  const initialTab =
+    tab === "print" || tab === "original" || tab === "commissions"
+      ? tab
+      : undefined;
   return (
     <PageShell cartOnlyFixed>
-      <ShopTabs products={products} />
+      <ShopTabs products={products} initialTab={initialTab} />
     </PageShell>
   );
 }

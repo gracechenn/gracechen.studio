@@ -32,13 +32,13 @@ export const products: Product[] = [
     slug: "beach-print",
     title: "Memory of a French Noon",
     kind: "print",
-    dimensions: "20 x 20 in",
+    dimensions: "12 x 12 in",
     price: 40,
     image: "/assets/painting/p02_img7866.jpg",
     width: 971,
     height: 1020,
     year: 2026,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "water-print",
@@ -50,7 +50,7 @@ export const products: Product[] = [
     width: 1671,
     height: 1263,
     year: 2026,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "persimmons-print",
@@ -62,7 +62,7 @@ export const products: Product[] = [
     width: 782,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "plant-print",
@@ -74,7 +74,7 @@ export const products: Product[] = [
     width: 768,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "sashimi-print",
@@ -86,7 +86,7 @@ export const products: Product[] = [
     width: 780,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "strawberries-print",
@@ -98,7 +98,7 @@ export const products: Product[] = [
     width: 971,
     height: 684,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "chickens-print",
@@ -110,7 +110,7 @@ export const products: Product[] = [
     width: 776,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "ramen-print",
@@ -122,7 +122,7 @@ export const products: Product[] = [
     width: 766,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "reflection-print",
@@ -134,7 +134,7 @@ export const products: Product[] = [
     width: 971,
     height: 677,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "fried-egg-print",
@@ -146,7 +146,7 @@ export const products: Product[] = [
     width: 764,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "deviled-eggs-print",
@@ -158,7 +158,7 @@ export const products: Product[] = [
     width: 768,
     height: 1100,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
   {
     slug: "autumn-print",
@@ -170,7 +170,7 @@ export const products: Product[] = [
     width: 971,
     height: 700,
     year: 2024,
-    description: "Signed, open-edition print on archival paper.",
+    description: "Signed print on archival paper.",
   },
 
   // Originals — one-of-a-kind oils.

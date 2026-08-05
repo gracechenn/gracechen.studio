@@ -18,8 +18,14 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "commissions", label: "Commissions" },
 ];
 
-export function ShopTabs({ products }: { products: Product[] }) {
-  const [tab, setTab] = useState<Tab>("print");
+export function ShopTabs({
+  products,
+  initialTab = "print",
+}: {
+  products: Product[];
+  initialTab?: Tab;
+}) {
+  const [tab, setTab] = useState<Tab>(initialTab);
 
   return (
     <>
@@ -47,16 +53,16 @@ export function ShopTabs({ products }: { products: Product[] }) {
       {tab === "commissions" ? (
         <CommissionsPanel />
       ) : (
-        <ProductGrid key={tab} products={products.filter((p) => p.kind === tab)} />
+        <ProductGrid key={tab} tab={tab} products={products.filter((p) => p.kind === tab)} />
       )}
     </>
   );
 }
 
-function ProductGrid({ products }: { products: Product[] }) {
+function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
   const { revealed, onImageLoad } = useImagesLoaded(products.length);
   return (
-    <Container>
+    <Container className="pb-10">
       <div
         className={clsx(
           "grid grid-cols-1 gap-x-6 gap-y-12 transition-opacity duration-700 sm:grid-cols-2 lg:grid-cols-3",
@@ -73,7 +79,7 @@ function ProductGrid({ products }: { products: Product[] }) {
           return (
           <Link
             key={product.slug}
-            href={`/shop/${product.slug}`}
+            href={`/shop/${product.slug}?from=${tab}`}
             className="group block"
           >
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-card">

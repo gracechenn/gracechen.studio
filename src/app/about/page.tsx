@@ -21,8 +21,8 @@ export default function AboutPage() {
         <section className="mt-8">
           <h2 className="type-label text-ink">ABOUT</h2>
           <p className="mt-3 type-body-2 text-ink">
-            Grace Chen (b. 2002, Canada) is a artist and designer living and
-            working in New York City. She grew up in San Diego, California and
+            Grace Chen (b. 2002, Canada) is an oil painter and designer living
+            and working in New York City. She grew up in San Diego, California and
             holds a B.A. in Visual Arts and Computer Science from Brown
             University (2024).
           </p>
