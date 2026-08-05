@@ -52,11 +52,11 @@ export default function CartPage() {
               className="object-contain"
             />
           </div>
-          <p className="type-body-1 text-ink">Your cart is empty.</p>
+          <p className="type-body-2 text-ink">Your cart is empty.</p>
           <div className="py-[20px]">
             <Link
               href="/shop"
-              className="type-label text-[16px] text-[#0051ff] transition-opacity hover:opacity-70"
+              className="type-label text-[14px] text-[#0051ff] transition-opacity hover:opacity-70"
             >
               BROWSE SHOP →
             </Link>

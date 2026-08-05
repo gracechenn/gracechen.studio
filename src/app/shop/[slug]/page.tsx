@@ -105,7 +105,10 @@ export default async function ProductPage({
                 Sold
               </Button>
             ) : (
-              <AddToCart slug={product.slug} />
+              <AddToCart
+                slug={product.slug}
+                showQuantity={product.kind === "print"}
+              />
             )}
           </div>
         </div>
