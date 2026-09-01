@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/Container";
@@ -30,7 +30,7 @@ export function ShopTabs({
   return (
     <>
       <Container className="pt-10 pb-10 sm:pt-16">
-        <div className="flex gap-8">
+        <div className="flex justify-center gap-8">
           {TABS.map(({ id, label }) => (
             <button
               key={id}
@@ -53,7 +53,16 @@ export function ShopTabs({
       {tab === "commissions" ? (
         <CommissionsPanel />
       ) : (
-        <ProductGrid key={tab} tab={tab} products={products.filter((p) => p.kind === tab)} />
+        <>
+          {tab === "print" && (
+            <Container className="pb-6">
+              <p className="type-label text-ink-muted">
+                Free shipping on orders over $50
+              </p>
+            </Container>
+          )}
+          <ProductGrid key={tab} tab={tab} products={products.filter((p) => p.kind === tab)} />
+        </>
       )}
     </>
   );
@@ -69,19 +78,14 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
           revealed ? "opacity-100" : "opacity-0",
         )}
       >
-        {products.map((product) => {
-          const isPrint = product.kind === "print";
-          // Transform scale that makes an object-contain image exactly cover
-          // the 4/5 (0.8) card box, so prints look cropped at rest and can
-          // smoothly zoom OUT to scale(1) = full image on hover.
-          const imgAspect = product.width / product.height;
-          const coverScale = Math.max(0.8 / imgAspect, imgAspect / 0.8);
-          return (
+        {products.map((product) => (
           <Link
             key={product.slug}
             href={`/shop/${product.slug}?from=${tab}`}
             className="group block"
           >
+            {/* Show the full artwork (contained) in the preview for both prints
+                and originals; both keep an inset, larger for originals. */}
             <div className="relative aspect-[4/5] w-full overflow-hidden bg-card">
               <Image
                 src={product.image}
@@ -93,15 +97,8 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
                 onLoad={onImageLoad}
                 className={clsx(
                   "object-contain object-center",
-                  isPrint
-                    ? "transition-transform duration-700 ease-out scale-[var(--cover-scale)] group-hover:scale-100"
-                    : "px-8",
+                  product.kind === "original" ? "px-8" : "p-4",
                 )}
-                style={
-                  isPrint
-                    ? ({ ["--cover-scale" as string]: String(coverScale) } as CSSProperties)
-                    : undefined
-                }
               />
               <span className="absolute left-3 top-3 bg-bg/90 px-2 py-1 type-label">
                 {product.kind}
@@ -119,8 +116,7 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
                 : product.dimensions}
             </p>
           </Link>
-          );
-        })}
+        ))}
       </div>
     </Container>
   );

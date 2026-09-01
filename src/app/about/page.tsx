@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { PageShell } from "@/components/PageShell";
+import { SparkleTrail } from "@/components/SparkleTrail";
 
 export const metadata: Metadata = { title: "About" };
 
 export default function AboutPage() {
   return (
     <PageShell>
+      <SparkleTrail />
       <div className="mx-auto w-full max-w-[451px] px-6 pt-10 pb-24 sm:pt-16">
         <div className="relative aspect-[451/558] w-full overflow-hidden bg-card">
           <Image

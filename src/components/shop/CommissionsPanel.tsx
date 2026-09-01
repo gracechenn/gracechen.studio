@@ -1,7 +1,6 @@
 import { Container } from "@/components/Container";
-import { ButtonLink } from "@/components/ui/Button";
 
-const EMAIL = "gracechen567@gmail.com";
+const EMAIL = "hello@gracechen.studio";
 
 const MAILTO =
   `mailto:${EMAIL}?subject=` +
@@ -14,40 +13,47 @@ const MAILTO =
 const DETAILS: { term: string; desc: string }[] = [
   {
     term: "Pricing",
-    desc: "Scales with size and complexity; originals typically begin around $500 and go up from there.",
+    desc: "Scales with size and complexity; originals typically begin around $500 and go up from there. All pieces come unframed.",
   },
   {
     term: "Deposit",
-    desc: "A 50% deposit begins the work; the remaining balance is due on completion, before shipping.",
+    desc: "A 50% deposit is required to begin the work; the remaining balance is due on completion, before shipping.",
   },
   {
     term: "Turnaround",
-    desc: "Usually 4–8 weeks from the deposit, depending on scale and the current queue.",
+    desc: "Usually 4–8 weeks from the deposit, depending on size and the current queue.",
   },
   {
     term: "Shipping",
-    desc: "Domestic shipping within the US, or free pickup in New York City.",
+    desc: "Shipping will be calculated separately or I offer free pickup in New York City.",
   },
 ];
 
 export function CommissionsPanel() {
   return (
     <Container>
-      <div className="max-w-2xl type-body-2 text-ink">
+      {/* 451px centred column — matches the About page width. */}
+      <div className="mx-auto max-w-[451px] type-body-2 text-ink">
+        <p>Commissions are currently closed</p>
+        <div
+          aria-hidden="true"
+          className="my-6 flex items-center gap-2 text-ink-muted"
+        >
+          <span className="text-[10px] tracking-[0.2em]">⊹˚₊‧</span>
+          <span className="flex-1 border-t border-hairline" />
+          <span className="text-[10px] tracking-[0.2em]">‧₊˚⊹</span>
+        </div>
         <p>
-          I take on a small number of commissioned oil paintings each year. To
-          start, send a short note with your idea, any reference images, and
-          where the piece will live. All pieces come unframed.
-        </p>
-        <p className="mt-6">
-          Reach out to{" "}
+          I take on a small number of commissioned oil paintings each year. Reach
+          out to{" "}
           <a href={MAILTO} className="hover:underline">
             {EMAIL}
           </a>{" "}
-          to get started.
+          to get started. Send a short note with your idea, any reference images,
+          and where the piece will live.
         </p>
 
-        <div className="mt-10 space-y-6">
+        <div className="mt-6 space-y-6">
           {DETAILS.map(({ term, desc }) => (
             <div key={term}>
               <p className="text-ink-muted">{term}</p>
@@ -55,10 +61,6 @@ export function CommissionsPanel() {
             </div>
           ))}
         </div>
-
-        <ButtonLink href={MAILTO} className="mt-10">
-          Email to inquire
-        </ButtonLink>
       </div>
     </Container>
   );

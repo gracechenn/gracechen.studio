@@ -21,7 +21,7 @@ export function Footer() {
           TikTok
         </Link>
         <Link
-          href="mailto:gracechen567@gmail.com"
+          href="mailto:hello@gracechen.studio"
           className="text-ink transition-colors hover:text-ink-muted"
         >
           Contact

@@ -13,9 +13,9 @@ type SectionLink = {
 };
 
 const SECTION_LINKS: SectionLink[] = [
-  // Hidden for now — the ruler (old home) page still exists at /ruler but is
-  // intentionally unlinked. Restore this entry to bring it back to the nav.
-  // { label: "RULER", href: "/ruler" },
+  { label: "HOME", href: "/" },
+  // The ruler (old home) page still exists at /ruler but is intentionally
+  // unlinked. Add { label: "RULER", href: "/ruler" } here to restore it.
   {
     label: "ARTWORK",
     href: "/artwork",
@@ -38,24 +38,30 @@ export function Nav({ cartOnlyFixed = false }: { cartOnlyFixed?: boolean }) {
   const { count } = useCart();
   const [open, setOpen] = useState(false);
 
-  const wordmarkAndLinks = (
-    <div className="flex items-center gap-[38px]">
-      <Link href="/" className="type-wordmark">
-        Grace Chen
-      </Link>
-      <ul className="hidden items-center gap-[38px] md:flex type-label">
-        {SECTION_LINKS.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              className="text-ink transition-colors hover:text-ink-muted"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+  // Section links, left-aligned on desktop (hidden behind the mobile menu below).
+  const sectionLinks = (
+    <ul className="hidden items-center gap-[38px] md:flex type-label">
+      {SECTION_LINKS.map((link) => (
+        <li key={link.href}>
+          <Link
+            href={link.href}
+            className="text-ink transition-colors hover:text-ink-muted"
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Wordmark, absolutely centred in the bar regardless of the flanking content.
+  const wordmark = (
+    <Link
+      href="/"
+      className="type-wordmark absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap"
+    >
+      Grace Chen
+    </Link>
   );
 
   const menuButton = (
@@ -102,10 +108,11 @@ export function Nav({ cartOnlyFixed = false }: { cartOnlyFixed?: boolean }) {
   if (cartOnlyFixed) {
     return (
       <>
-        {/* Wordmark + links: positioned at the top of the page (absolute), so
-            they scroll away as the grid scrolls. */}
+        {/* Links (left) + centred wordmark: positioned at the top of the page
+            (absolute), so they scroll away as the grid scrolls. */}
         <div className="absolute inset-x-0 top-0 z-40 flex h-[77px] items-center px-6">
-          {wordmarkAndLinks}
+          {sectionLinks}
+          {wordmark}
         </div>
 
         {/* Fixed transparent layer holding only CART (+ mobile menu). It's
@@ -126,9 +133,10 @@ export function Nav({ cartOnlyFixed = false }: { cartOnlyFixed?: boolean }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 w-full">
-      <nav className="flex h-[77px] items-center justify-between px-6 sm:px-6">
-        {wordmarkAndLinks}
-        <div className="flex items-center gap-8">
+      <nav className="relative flex h-[77px] items-center px-6">
+        {sectionLinks}
+        {wordmark}
+        <div className="ml-auto flex items-center gap-8">
           {menuButton}
           {cartLink}
         </div>

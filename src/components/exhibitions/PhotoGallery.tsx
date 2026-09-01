@@ -142,8 +142,8 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
   // Resting centres captured at hover time (transform-independent geometry).
   const [centers, setCenters] = useState<Array<Point | null> | null>(null);
-  // The currently open lightbox photo, or null when closed.
-  const [lightboxItem, setLightboxItem] = useState<PhotoItem | null>(null);
+  // Index into `flat` of the open lightbox photo, or null when closed.
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const reducedMotion = usePrefersReducedMotion();
   const panelVisible = useTuningPanelVisible();
@@ -200,16 +200,24 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
     setHovered(null);
   };
 
-  const openLightbox = (item: PhotoItem, el: HTMLDivElement) => {
+  const openLightbox = (index: number, el: HTMLDivElement) => {
     triggerRef.current = el;
-    setLightboxItem(item);
+    setLightboxIndex(index);
   };
 
   const closeLightbox = () => {
-    setLightboxItem(null);
+    setLightboxIndex(null);
     // Restore focus to the image that opened the lightbox.
     triggerRef.current?.focus();
   };
+
+  // Wrap-around pagination through the flattened photo order.
+  const showPrev = () =>
+    setLightboxIndex((i) =>
+      i === null ? i : (i - 1 + flat.length) % flat.length,
+    );
+  const showNext = () =>
+    setLightboxIndex((i) => (i === null ? i : (i + 1) % flat.length));
 
   // The flex rows wrap at width-dependent breakpoints, so a resize reflows the
   // grid and shifts every cell. Watch the gallery container and, if a hover is
@@ -266,11 +274,11 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
                 }}
                 onMouseEnter={() => handleEnter(index)}
                 onMouseLeave={handleLeave}
-                onClick={(e) => openLightbox(item, e.currentTarget)}
+                onClick={(e) => openLightbox(index, e.currentTarget)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    openLightbox(item, e.currentTarget);
+                    openLightbox(index, e.currentTarget);
                   }
                 }}
               >
@@ -290,8 +298,13 @@ export function PhotoGallery({ rows }: { rows: PhotoRowConfig[] }) {
         </div>
       ))}
 
-      {lightboxItem && (
-        <Lightbox item={lightboxItem} onClose={closeLightbox} />
+      {lightboxIndex !== null && (
+        <Lightbox
+          item={flat[lightboxIndex]}
+          onClose={closeLightbox}
+          onPrev={showPrev}
+          onNext={showNext}
+        />
       )}
 
       {panelVisible &&

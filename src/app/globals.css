@@ -108,3 +108,50 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Pink sparkle cursor trail (ported from gracechen.io). Each glyph is spawned
+   at the pointer on mousemove and fades/scales out over 0.8s, then is removed. */
+.sparkle {
+  position: absolute;
+  z-index: 2000;
+  pointer-events: none;
+  color: pink;
+  font-size: 16px;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+  will-change: transform, opacity;
+  transform: rotate(var(--rot, 0deg)) scale(1);
+  animation: sparkleFadeOut 0.8s ease-out forwards;
+}
+@keyframes sparkleFadeOut {
+  from {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg)) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(var(--rot, 0deg)) scale(1.5);
+  }
+}
+
+/* /home-alt image crossfade — the new artwork pops in as the old pops out.
+   Elements are centred via the translate baked into these keyframes. */
+@keyframes homealt-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes homealt-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.012);
+  }
+}

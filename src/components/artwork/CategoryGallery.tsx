@@ -5,7 +5,12 @@ import { useState } from "react";
 import { Lightbox, type LightboxItem } from "@/components/Lightbox";
 import { clsx } from "@/lib/clsx";
 import { useImagesLoaded } from "@/lib/useImagesLoaded";
-import type { ArtworkColumns, ArtworkImage } from "@/data/artworkCategories";
+import {
+  getArtworkDetail,
+  getArtworkMeta,
+  type ArtworkColumns,
+  type ArtworkImage,
+} from "@/data/artworkCategories";
 
 /**
  * Shared 3-column artwork gallery used by /painting, /illustration and /textile.
@@ -39,7 +44,16 @@ export function CategoryGallery({ columns }: { columns: ArtworkColumns }) {
               <ArtworkCell
                 key={image.src}
                 image={image}
-                onOpen={() => setLightboxItem({ src: image.src, alt: image.alt })}
+                onOpen={() => {
+                  const meta = getArtworkMeta(image.src);
+                  setLightboxItem({
+                    src: image.src,
+                    alt: meta?.title ?? image.alt,
+                    title: meta?.title,
+                    year: meta?.year,
+                    detail: getArtworkDetail(image.src),
+                  });
+                }}
                 onLoad={onImageLoad}
               />
             ))}
