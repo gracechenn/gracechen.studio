@@ -45,7 +45,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p02_img7866.jpg",
     width: 971,
     height: 1020,
-    description: "Signed print on 200gsm archival paper with matte finish.",
+    description:
+      "Printed on fine art archival grade, acid free, thick paper with a matte finish. Individually hand signed.",
   },
   {
     slug: "water-print",
@@ -55,7 +56,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p17_water.jpg",
     width: 2465,
     height: 1864,
-    description: "Signed print on 200gsm archival paper with matte finish.",
+    description:
+      "Printed on fine art archival grade, acid free, thick paper with a matte finish. Individually hand signed.",
   },
   {
     slug: "garden-print",
@@ -65,7 +67,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p18_garden.jpg",
     width: 2847,
     height: 2056,
-    description: "Signed print on 200gsm archival paper with matte finish.",
+    description:
+      "Printed on fine art archival grade, acid free, thick paper with a matte finish. Individually hand signed.",
   },
   {
     slug: "persimmons-print",
@@ -75,7 +78,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p03_img0453.jpg",
     width: 782,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "plant-print",
@@ -85,7 +89,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p09_img0510.jpg",
     width: 768,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "sashimi-print",
@@ -95,7 +100,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p04_img0757.jpg",
     width: 780,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "strawberries-print",
@@ -105,7 +111,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p06_img3682.jpg",
     width: 971,
     height: 684,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "chickens-print",
@@ -115,7 +122,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p10_img3676.jpg",
     width: 776,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "ramen-print",
@@ -125,7 +133,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p15_img0755.jpg",
     width: 766,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "reflection-print",
@@ -135,7 +144,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p11_a2acc6da.jpg",
     width: 971,
     height: 677,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "fried-egg-print",
@@ -145,7 +155,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p05_img3688.jpg",
     width: 764,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
   {
     slug: "deviled-eggs-print",
@@ -155,7 +166,8 @@ const RAW: RawProduct[] = [
     image: "/assets/painting/p14_img0754.jpg",
     width: 768,
     height: 1100,
-    description: "Signed print on 200gsm cardstock with semigloss finish.",
+    description:
+      "Printed on acid free, thick paper with a semi-gloss finish. Individually hand signed.",
   },
 
   // Originals — one-of-a-kind oils.
