@@ -9,6 +9,36 @@ type CartPayloadItem = { slug: string; quantity: number };
 // Shipping settings — kept as named constants so they're trivial to change.
 // Amounts are in cents to match Stripe's unit_amount convention.
 const ORIGINAL_DOMESTIC_SHIPPING_CENTS = 3000; // $30 domestic shipping for originals
+const PRINT_INTERNATIONAL_SHIPPING_CENTS = 500; // $5 international shipping for prints
+
+// Stripe's full supported set for `shipping_address_collection.allowed_countries`
+// (ISO-3166-1 alpha-2). Sourced from the Stripe SDK's own
+// `SessionCreateParams.ShippingAddressCollection.AllowedCountry` union so every
+// code is accepted at session creation (passing an unsupported code 400s). Used
+// for print-only carts so prints can ship (almost) anywhere. Sanctioned/
+// unsupported destinations (e.g. CU, IR, KP, SY) are intentionally absent
+// because Stripe does not accept them.
+const INTERNATIONAL_ALLOWED_COUNTRIES = [
+  "AC", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AT", "AU",
+  "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL",
+  "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CD",
+  "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CV", "CW", "CY",
+  "CZ", "DE", "DJ", "DK", "DM", "DO", "DZ", "EC", "EE", "EG", "EH", "ER", "ES",
+  "ET", "FI", "FJ", "FK", "FO", "FR", "GA", "GB", "GD", "GE", "GF", "GG", "GH",
+  "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK",
+  "HN", "HR", "HT", "HU", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IS", "IT",
+  "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KR", "KW", "KY",
+  "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA",
+  "MC", "MD", "ME", "MF", "MG", "MK", "ML", "MM", "MN", "MO", "MQ", "MR", "MS",
+  "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NG", "NI", "NL",
+  "NO", "NP", "NR", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL",
+  "PM", "PN", "PR", "PS", "PT", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA",
+  "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO",
+  "SR", "SS", "ST", "SV", "SX", "SZ", "TA", "TC", "TD", "TF", "TG", "TH", "TJ",
+  "TK", "TL", "TM", "TN", "TO", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "US",
+  "UY", "UZ", "VA", "VC", "VE", "VG", "VN", "VU", "WF", "WS", "XK", "YE", "YT",
+  "ZA", "ZM", "ZW",
+] as const;
 
 function siteUrl(req: Request): string {
   return (
@@ -95,7 +125,9 @@ export async function POST(req: Request) {
 
   // Derive shipping from the resolved cart. Originals ship crated, so a cart
   // containing one lets the customer choose free NYC pickup or $30 domestic
-  // shipping; print-only carts always ship free.
+  // shipping (US-only). Print-only carts ship worldwide: free within the US or
+  // $5 international. Stripe Checkout can't auto-select a rate by destination, so
+  // we present both options and let the buyer pick.
   const hasOriginal = resolved.some(({ product }) => product.kind === "original");
 
   const shippingOptions = hasOriginal
@@ -123,10 +155,27 @@ export async function POST(req: Request) {
           shipping_rate_data: {
             type: "fixed_amount" as const,
             fixed_amount: { amount: 0, currency: "usd" },
-            display_name: "Free shipping",
+            display_name: "United States — Free shipping",
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: "fixed_amount" as const,
+            fixed_amount: {
+              amount: PRINT_INTERNATIONAL_SHIPPING_CENTS,
+              currency: "usd",
+            },
+            display_name: "International shipping",
           },
         },
       ];
+
+  // `shipping_address_collection.allowed_countries` is session-wide, so branch
+  // it on the cart: originals stay US-only; print-only carts open up to Stripe's
+  // full supported country set.
+  const allowedCountries = hasOriginal
+    ? (["US"] as const)
+    : INTERNATIONAL_ALLOWED_COUNTRIES;
 
   const base = siteUrl(req);
 
@@ -145,7 +194,7 @@ export async function POST(req: Request) {
       line_items: lineItems,
       success_url: `${base}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/shop`,
-      shipping_address_collection: { allowed_countries: ["US"] },
+      shipping_address_collection: { allowed_countries: [...allowedCountries] },
       shipping_options: shippingOptions,
       // Let customers enter promo codes defined by the owner in the Stripe
       // Dashboard (Products → Coupons / Promotion codes).
