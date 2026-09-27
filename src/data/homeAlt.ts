@@ -29,16 +29,12 @@ const printByImage = new Map<string, string>();
 for (const p of products) {
   if (p.kind === "print") printByImage.set(p.image, p.slug);
 }
-// The Water print is sourced from a different file than the artwork page.
-const PRINT_OVERRIDES: Record<string, string> = {
-  "/assets/painting/p17_water.jpg": "water-print",
-};
 
 export const homeAltSlides: HomeAltSlide[] = flat.map((image) => ({
   ...image,
   title: artworkMeta[image.src]?.title ?? image.alt,
   year: artworkMeta[image.src]?.year ?? "",
-  printSlug: PRINT_OVERRIDES[image.src] ?? printByImage.get(image.src),
+  printSlug: printByImage.get(image.src),
 }));
 
 /**

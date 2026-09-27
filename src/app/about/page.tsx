@@ -35,12 +35,24 @@ export default function AboutPage() {
           <p className="mt-3 type-body-2 text-ink">
             I work primarily based off of photographs from my daily life. The
             canvas allows me to capture, relive, and reinterpret a memory as I
-            remember it. Painting is a form of devotion through attention. Each
-            painting is a window into description and simplification–how much can
-            I abstract while still transporting the viewer to a moment full of
-            texture and detail? In particular, I often focus on light as a
-            unnamed subject, whether that be from warm, filtered sunlight or the
-            harsh flash of a digital camera.
+            remember it. To me, painting is a form of devotion through attention.
+            In each painting there is a tension between description and
+            simplification–how much can I abstract while still transporting the
+            viewer to a moment full of texture and detail? In particular, I often
+            focus on light as a unnamed subject, whether that be from warm,
+            filtered sunlight or the harsh flash of a digital camera.
+          </p>
+        </section>
+
+        <section className="mt-8">
+          <h2 className="type-label text-ink">CONTACT</h2>
+          <p className="mt-3 type-body-2 text-ink">
+            <a
+              href="mailto:hello@gracechen.studio"
+              className="transition-colors hover:text-ink-muted"
+            >
+              hello@gracechen.studio
+            </a>
           </p>
         </section>
       </div>

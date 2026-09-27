@@ -38,7 +38,7 @@ export const paintingColumns: ArtworkColumns = [
     { src: "/assets/painting/p09_img0510.jpg", width: 768, height: 1100, alt: "Painting" },
     { src: "/assets/painting/p10_img3676.jpg", width: 776, height: 1100, alt: "Painting" },
     { src: "/assets/painting/p11_a2acc6da.jpg", width: 971, height: 677, alt: "Painting" },
-    { src: "/assets/painting/p17_water.jpg", width: 1671, height: 1263, alt: "Painting" },
+    { src: "/assets/painting/p17_water.jpg", width: 2465, height: 1864, alt: "Painting" },
   ],
   [
     { src: "/assets/painting/p12_img7609.jpg", width: 794, height: 1100, alt: "Painting" },
@@ -105,7 +105,8 @@ export const artworkSections: ArtworkSection[] = [
     title: "BY THE WATER (2026)",
     images: [
       { src: "/assets/painting/p02_img7866.jpg", width: 971, height: 1020, alt: "Painting" },
-      { src: "/assets/painting/p17_water.jpg", width: 1671, height: 1263, alt: "Painting" },
+      { src: "/assets/painting/p17_water.jpg", width: 2465, height: 1864, alt: "Painting" },
+      { src: "/assets/painting/p18_garden.jpg", width: 2847, height: 2056, alt: "Painting" },
     ],
   },
   {
@@ -154,6 +155,7 @@ export const artworkMeta: Record<string, { title: string; year: string }> = {
   // BY THE WATER
   "/assets/painting/p02_img7866.jpg": { title: "A french afternoon", year: "2026" },
   "/assets/painting/p17_water.jpg": { title: "Where the light settles", year: "2026" },
+  "/assets/painting/p18_garden.jpg": { title: "A quiet hour in the garden", year: "2026" },
   // WITH LOVE
   "/assets/painting/p01_img9160.png": { title: "Once, I was Entirely Soft", year: "2024" },
   "/assets/painting/p12_img7609.jpg": { title: "Embrace II", year: "2024" },

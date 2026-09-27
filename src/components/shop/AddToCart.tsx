@@ -4,18 +4,23 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/Button";
 
-const MAX_QUANTITY = 10;
+const DEFAULT_MAX_QUANTITY = 10;
 
 export function AddToCart({
   slug,
   showQuantity = false,
+  maxQuantity,
 }: {
   slug: string;
   showQuantity?: boolean;
+  /** Cap for finite prints; falls back to the default browsing cap. */
+  maxQuantity?: number;
 }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const max = Math.max(1, Math.min(maxQuantity ?? DEFAULT_MAX_QUANTITY, DEFAULT_MAX_QUANTITY));
 
   return (
     <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-stretch">
@@ -39,8 +44,8 @@ export function AddToCart({
           <button
             type="button"
             aria-label="Increase quantity"
-            onClick={() => setQuantity((q) => Math.min(MAX_QUANTITY, q + 1))}
-            disabled={quantity >= MAX_QUANTITY}
+            onClick={() => setQuantity((q) => Math.min(max, q + 1))}
+            disabled={quantity >= max}
             className="flex items-center px-4 py-3 text-ink-muted transition-colors hover:text-ink disabled:pointer-events-none disabled:opacity-40"
           >
             +

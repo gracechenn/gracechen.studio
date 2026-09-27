@@ -8,7 +8,11 @@ import { clsx } from "@/lib/clsx";
 import { formatUSD } from "@/lib/format";
 import { useImagesLoaded } from "@/lib/useImagesLoaded";
 import type { Product } from "@/data/products";
+import { isLowStock, type Availability } from "@/lib/inventory";
 import { CommissionsPanel } from "./CommissionsPanel";
+
+/** Live availability per product slug, resolved on the server. */
+export type AvailabilityMap = Record<string, Availability>;
 
 type Tab = "original" | "print" | "commissions";
 
@@ -20,9 +24,11 @@ const TABS: { id: Tab; label: string }[] = [
 
 export function ShopTabs({
   products,
+  availability,
   initialTab = "print",
 }: {
   products: Product[];
+  availability?: AvailabilityMap;
   initialTab?: Tab;
 }) {
   const [tab, setTab] = useState<Tab>(initialTab);
@@ -57,18 +63,31 @@ export function ShopTabs({
           {tab === "print" && (
             <Container className="pb-6">
               <p className="type-label text-ink-muted">
-                Free shipping on orders over $50
+                Free shipping on all prints
               </p>
             </Container>
           )}
-          <ProductGrid key={tab} tab={tab} products={products.filter((p) => p.kind === tab)} />
+          <ProductGrid
+            key={tab}
+            tab={tab}
+            products={products.filter((p) => p.kind === tab)}
+            availability={availability}
+          />
         </>
       )}
     </>
   );
 }
 
-function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
+function ProductGrid({
+  tab,
+  products,
+  availability,
+}: {
+  tab: Tab;
+  products: Product[];
+  availability?: AvailabilityMap;
+}) {
   const { revealed, onImageLoad } = useImagesLoaded(products.length);
   return (
     <Container className="pb-10">
@@ -78,7 +97,16 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
           revealed ? "opacity-100" : "opacity-0",
         )}
       >
-        {products.map((product) => (
+        {products.map((product) => {
+          // Live inventory overrides the static `sold` flag; fall back to it
+          // when availability wasn't provided (e.g. KV off).
+          const soldOut = availability
+            ? !availability[product.slug]?.available
+            : !!product.sold;
+          const lowStock =
+            !soldOut &&
+            isLowStock(product, availability?.[product.slug]?.remaining ?? null);
+          return (
           <Link
             key={product.slug}
             href={`/shop/${product.slug}?from=${tab}`}
@@ -100,14 +128,46 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
                   product.kind === "original" ? "px-8" : "p-4",
                 )}
               />
-              <span className="absolute left-3 top-3 bg-bg/90 px-2 py-1 type-label">
-                {product.kind}
-              </span>
+              {soldOut && product.kind === "print" ? (
+                // Sold-out prints: a frosted-glass cover sized to the visible
+                // artwork only. The image is object-contain inside the p-4
+                // content box, so we contain-fit a box to the artwork's
+                // intrinsic aspect ratio. A box only contain-fits in CSS if we
+                // pin the dimension the image fills and let aspect-ratio derive
+                // the other: portrait prints fill the height, landscape the
+                // width. (Pinning both, as with w-full + max-h-full, keeps the
+                // full padded width for portraits → the white side border.)
+                <div className="absolute inset-4 flex items-center justify-center">
+                  <div
+                    className={clsx(
+                      "flex items-center justify-center bg-white/70 type-label text-ink",
+                      product.width / product.height < 4 / 5
+                        ? "h-full w-auto max-w-full"
+                        : "w-full h-auto max-h-full",
+                    )}
+                    style={{
+                      aspectRatio: `${product.width} / ${product.height}`,
+                      backdropFilter: "blur(6px)",
+                      WebkitBackdropFilter: "blur(6px)",
+                    }}
+                  >
+                    Sold out
+                  </div>
+                </div>
+              ) : (
+                <span className="absolute left-3 top-3 bg-bg/90 px-2 py-1 type-label">
+                  {product.kind}
+                </span>
+              )}
             </div>
             <div className="mt-4 flex items-baseline justify-between gap-3">
               <h2 className="type-body-2 text-ink">{product.title}</h2>
               <span className="type-body-2 text-ink">
-                {product.sold ? "Sold" : formatUSD(product.price)}
+                {soldOut
+                  ? product.kind === "print"
+                    ? "Sold out"
+                    : "Sold"
+                  : formatUSD(product.price)}
               </span>
             </div>
             <p className="mt-1 type-label">
@@ -115,8 +175,12 @@ function ProductGrid({ tab, products }: { tab: Tab; products: Product[] }) {
                 ? `${product.dimensions}, ${product.medium}`
                 : product.dimensions}
             </p>
+            {lowStock && (
+              <p className="mt-1 type-label text-[#0051ff]">Low on stock</p>
+            )}
           </Link>
-        ))}
+          );
+        })}
       </div>
     </Container>
   );

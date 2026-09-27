@@ -9,6 +9,7 @@
   --ink: #1f1f1f;
   --ink-strong: #000000;
   --ink-muted: rgba(31, 31, 31, 0.7);
+  --ink-faint: rgba(31, 31, 31, 0.5);
   --accent: #3f2dcc;
   --accent-muted: rgba(63, 45, 204, 0.7);
   --card: rgba(238, 238, 238, 0.6);
@@ -24,6 +25,7 @@
   --color-ink: var(--ink);
   --color-ink-strong: var(--ink-strong);
   --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
   --color-card: var(--card);

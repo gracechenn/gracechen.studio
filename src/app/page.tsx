@@ -14,21 +14,27 @@ export default function Home() {
           {/* Full-bleed hero — fills the full browser viewport height and crops to
               width via object-cover. Sits flush at the very top so the fixed
               transparent nav overlays it. */}
-          <Link href="/artwork" className="relative block h-[100dvh] w-full">
-            <Image
-              src="/assets/home/hero.jpg"
-              alt="Framed baby painting on a gallery wall"
-              fill
-              sizes="100vw"
-              quality={90}
-              priority
-              className="object-cover"
-            />
-          </Link>
+          <div className="relative h-[100dvh] w-full">
+            <Link href="/artwork" className="relative block h-full w-full">
+              <Image
+                src="/assets/home/hero.jpg"
+                alt="Framed baby painting on a gallery wall"
+                fill
+                sizes="100vw"
+                quality={90}
+                priority
+                className="object-cover"
+              />
+            </Link>
 
-          {/* Centered SHOP button — canonical solid style, inverts on hover. */}
-          <div className="flex justify-center pt-11 pb-11">
-            <ButtonLink href="/shop">˚.⋆꒰ SHOP ⊹ ࣪ ˖</ButtonLink>
+            {/* Centered SHOP button, overlaid on the hero — canonical solid
+                style, inverts on hover. */}
+            <ButtonLink
+              href="/shop"
+              className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+            >
+              ˚.⋆꒰ SHOP ⊹ ࣪ ˖
+            </ButtonLink>
           </div>
         </PageShell>
       </div>

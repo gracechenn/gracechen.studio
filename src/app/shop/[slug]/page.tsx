@@ -7,7 +7,11 @@ import { Container } from "@/components/Container";
 import { AddToCart } from "@/components/shop/AddToCart";
 import { Button } from "@/components/ui/Button";
 import { getProduct, products } from "@/data/products";
+import { getStock, isLowStock, resolveAvailability } from "@/lib/inventory";
 import { formatUSD } from "@/lib/format";
+
+// Render at request time so availability reflects live inventory.
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -39,6 +43,11 @@ export default async function ProductPage({
   const { from } = await searchParams;
   const product = getProduct(slug);
   if (!product) notFound();
+
+  const { available, remaining } = resolveAvailability(
+    product,
+    await getStock(slug),
+  );
 
   // Return to the tab the visitor came from; fall back to the product's kind
   // ("print" → Prints tab, "original" → Originals tab) on a direct landing.
@@ -74,7 +83,7 @@ export default async function ProductPage({
           <h1 className="mt-3 type-h2">
             {product.title}
           </h1>
-          {!product.sold && (
+          {available && (
             <p className="mt-5 type-body-2 text-ink">{formatUSD(product.price)}</p>
           )}
 
@@ -99,15 +108,20 @@ export default async function ProductPage({
             {product.description}
           </p>
 
+          {available && isLowStock(product, remaining) && (
+            <p className="mt-4 type-label text-[#0051ff]">Low on stock</p>
+          )}
+
           <div className="mt-8">
-            {product.sold ? (
+            {!available ? (
               <Button disabled className="w-full sm:w-auto">
-                Sold
+                {product.kind === "print" ? "Sold out" : "Sold"}
               </Button>
             ) : (
               <AddToCart
                 slug={product.slug}
                 showQuantity={product.kind === "print"}
+                maxQuantity={remaining ?? undefined}
               />
             )}
           </div>

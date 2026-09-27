@@ -13,7 +13,7 @@ const MAILTO =
 const DETAILS: { term: string; desc: string }[] = [
   {
     term: "Pricing",
-    desc: "Scales with size and complexity; originals typically begin around $500 and go up from there. All pieces come unframed.",
+    desc: "Scales with size and complexity, please reach out for a quote.",
   },
   {
     term: "Deposit",
@@ -43,7 +43,7 @@ export function CommissionsPanel() {
           <span className="flex-1 border-t border-hairline" />
           <span className="text-[10px] tracking-[0.2em]">‧₊˚⊹</span>
         </div>
-        <p>
+        <p className="text-ink-faint">
           I take on a small number of commissioned oil paintings each year. Reach
           out to{" "}
           <a href={MAILTO} className="hover:underline">
@@ -53,10 +53,10 @@ export function CommissionsPanel() {
           and where the piece will live.
         </p>
 
-        <div className="mt-6 space-y-6">
+        <div className="mt-6 space-y-6 text-ink-faint">
           {DETAILS.map(({ term, desc }) => (
             <div key={term}>
-              <p className="text-ink-muted">{term}</p>
+              <p className="text-ink-faint">{term}</p>
               <p>{desc}</p>
             </div>
           ))}
