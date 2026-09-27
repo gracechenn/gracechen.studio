@@ -147,7 +147,7 @@ export default function CartPage() {
                 <span>{formatUSD(subtotal)}</span>
               </div>
               <p className="mt-2 type-body-2 text-ink-muted">
-            Shipping calculated at checkout. Free on all print orders.
+            Shipping calculated at checkout.
               </p>
               <Button
                 onClick={checkout}
