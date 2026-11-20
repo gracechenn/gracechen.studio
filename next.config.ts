@@ -14,6 +14,17 @@ const nextConfig: NextConfig = {
   images: {
     qualities: [75, 90],
   },
+  async redirects() {
+    return [
+      // Vanity link → external Typeform. Temporary (307) so it can be
+      // repointed later without browsers caching it permanently.
+      {
+        source: "/snailmail",
+        destination: "https://form.typeform.com/to/eZawqkwK",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
