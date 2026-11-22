@@ -15,9 +15,10 @@ function formatDate(iso: string): string {
   return Number.isNaN(d.getTime()) ? iso : d.toLocaleString();
 }
 
-/** Completion rate as a one-decimal percentage; "–" when there are no starts. */
-function formatCompletionRate(rate: number, starts: number): string {
-  if (starts <= 0) return "–";
+/** Completion rate as a one-decimal percentage, capped at 100%; "0%" when there are no starts. */
+function formatCompletionRate(submissions: number, starts: number): string {
+  if (starts <= 0) return "0%";
+  const rate = Math.min(submissions / starts, 1);
   return `${(rate * 100).toFixed(1)}%`;
 }
 
@@ -42,10 +43,10 @@ export default async function SnailmailAdminPage() {
   const metricCards: { label: string; value: string }[] = [
     { label: "Views", value: String(metrics.views) },
     { label: "Starts", value: String(metrics.starts) },
-    { label: "Submissions", value: String(metrics.submissions) },
+    { label: "Submissions", value: String(subscribers.length) },
     {
       label: "Completion rate",
-      value: formatCompletionRate(metrics.completionRate, metrics.starts),
+      value: formatCompletionRate(subscribers.length, metrics.starts),
     },
     { label: "Time to complete", value: formatDuration(metrics.avgCompleteMs) },
   ];
