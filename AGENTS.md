@@ -4,6 +4,14 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+# Communication: give the owner step-by-step instructions
+
+Whenever a task requires the owner (user) to do something outside the code —
+e.g. in the Vercel dashboard, Stripe, Upstash, a browser, or the terminal —
+ALWAYS provide clear, numbered, step-by-step instructions: exactly where to
+click, what values to paste, and which commands to run. Never leave a required
+owner action as a vague description.
+
 # Scope discipline: build only what is specified
 
 Do NOT add anything the user did not explicitly ask for. In particular:
