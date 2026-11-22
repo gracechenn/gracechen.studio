@@ -66,11 +66,7 @@ export function SnailmailForm() {
         return;
       }
       setStatus("success");
-      setMessage(
-        data.alreadySubscribed
-          ? "You're already on the list — thank you!"
-          : "You're on the list. Talk soon!",
-      );
+      setMessage("Thanks for your interest!");
     } catch {
       setStatus("error");
       setMessage("Something went wrong. Please try again.");
@@ -104,7 +100,7 @@ export function SnailmailForm() {
           className="w-full border border-hairline bg-transparent px-4 py-3 type-body-2 text-ink placeholder:text-ink-muted focus:border-ink focus:outline-none"
         />
         <Button type="submit" disabled={status === "submitting"} className="sm:w-auto">
-          {status === "submitting" ? "Joining…" : "Join"}
+          {status === "submitting" ? "Submitting…" : "Submit"}
         </Button>
       </div>
       {status === "error" && (

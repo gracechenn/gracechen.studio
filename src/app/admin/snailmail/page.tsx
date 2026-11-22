@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMetrics, getSubscribers } from "@/lib/snailmail";
 import { isKvConfigured } from "@/lib/kv";
+import DeleteSubscriberButton from "@/components/snailmail/DeleteSubscriberButton";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -137,6 +138,7 @@ export default async function SnailmailAdminPage() {
               <tr style={{ textAlign: "left", borderBottom: "2px solid #eee" }}>
                 <th style={{ padding: "8px 8px" }}>Email</th>
                 <th style={{ padding: "8px 8px" }}>Signed up</th>
+                <th style={{ padding: "8px 8px" }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -144,6 +146,9 @@ export default async function SnailmailAdminPage() {
                 <tr key={s.email} style={{ borderBottom: "1px solid #f0f0f0" }}>
                   <td style={{ padding: "10px 8px", fontWeight: 500 }}>{s.email}</td>
                   <td style={{ padding: "10px 8px", color: "#555" }}>{formatDate(s.subscribedAt)}</td>
+                  <td style={{ padding: "10px 8px" }}>
+                    <DeleteSubscriberButton email={s.email} />
+                  </td>
                 </tr>
               ))}
             </tbody>

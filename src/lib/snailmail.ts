@@ -77,6 +77,17 @@ export async function getSubscribers(): Promise<Subscriber[]> {
   }
 }
 
+/** Remove a subscriber by normalized email. No-op when KV is off. */
+export async function removeSubscriber(email: string): Promise<void> {
+  const kv = getKv();
+  if (!kv) return;
+  try {
+    await kv.hdel(SUBSCRIBERS_KEY, email);
+  } catch (err) {
+    console.error("snailmail.removeSubscriber failed:", err);
+  }
+}
+
 /** Count a /snailmail page view. No-op when KV is off. */
 export async function recordView(): Promise<void> {
   const kv = getKv();
