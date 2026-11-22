@@ -66,6 +66,17 @@ export async function POST(req: Request) {
 
   const { saved, alreadyExisted } = await saveSubscriber(email);
 
+  // Surface the otherwise-silent failure path: when KV is unconfigured (or a
+  // write fails) `saved` is false, so we skip the submission metric AND the
+  // owner notification below. Without this log that looks like a successful
+  // signup in production (HTTP 200) while no email is ever sent.
+  if (!saved) {
+    console.error(
+      "snailmail: subscriber not saved (KV unconfigured or write failed) — " +
+        "skipping submission metric and owner notification.",
+    );
+  }
+
   // Count each successful save as a submission (even without a timing sample).
   if (saved) await recordSubmission(elapsedMs);
 
